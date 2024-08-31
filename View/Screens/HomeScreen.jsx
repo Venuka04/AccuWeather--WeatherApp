@@ -21,7 +21,7 @@ import * as Progress from "react-native-progress";
 import { storeData, getData } from "../utils/asyncStorage";
 import { weatherImages } from "../Assets/index";
 
-const defaultWeatherImage = require("../Assets/images/moderaterain.png"); // Fallback image
+const defaultWeatherImage = require("../Assets/images/moderaterain.png");
 
 export default function HomeScreen() {
   const [showSearch, setShowSearch] = useState(false);
@@ -30,35 +30,44 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
 
   const handleLocation = (loc) => {
+    if (!loc || !loc.name) return;
+
     setLocations([]);
     setShowSearch(false);
     setLoading(true);
+
     fetchWeatherForecast({
       cityName: loc.name,
       days: "7",
     })
       .then((data) => {
-        setWeather(data);
-        setLoading(false);
-        storeData("city", loc.name);
+        if (data) {
+          setWeather(data);
+          storeData("city", loc.name);
+        }
       })
       .catch((error) => {
         console.error("Error fetching weather forecast:", error);
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const handleSearch = (value) => {
     if (value.length > 2) {
       fetchLocations({ cityName: value })
         .then((data) => {
-          setLocations(data); // Adjust based on your API response
+          if (data && Array.isArray(data)) {
+            setLocations(data);
+          } else {
+            console.error("Invalid locations data format:", data);
+            setLocations([]);
+          }
         })
         .catch((error) => {
           console.error("Error fetching locations:", error);
         });
     } else {
-      setLocations([]); // Clear locations if input is too short
+      setLocations([]);
     }
   };
 
@@ -68,21 +77,21 @@ export default function HomeScreen() {
 
   const fetchMyWeatherData = async () => {
     let myCity = await getData("city");
-    let cityName = "Colombo";
-    if (myCity) cityName = myCity;
+    let cityName = myCity || "Colombo";
 
     fetchWeatherForecast({
       cityName,
       days: "7",
     })
       .then((data) => {
-        setWeather(data);
-        setLoading(false);
+        if (data) {
+          setWeather(data);
+        }
       })
       .catch((error) => {
         console.error("Error fetching weather forecast:", error);
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const handleTextDebounce = useCallback(
@@ -111,7 +120,7 @@ export default function HomeScreen() {
             alignItems: "center",
           }}
         >
-          <Progress.CircleSnail thickness={10} size={140} color="#0bb3b2" />
+          <Progress.CircleSnail thickness={10} size={100} color="#383f76" />
         </View>
       ) : (
         <SafeAreaView style={{ flex: 1 }}>
@@ -144,7 +153,7 @@ export default function HomeScreen() {
                 placeholder="Search city"
                 placeholderTextColor={Colors.gray}
                 style={{
-                  marginLeft: 40, // Space for the search icon
+                  marginLeft: 40,
                   backgroundColor: Colors.white,
                   borderRadius: 50,
                   height: 40,
@@ -241,7 +250,7 @@ export default function HomeScreen() {
                 {current?.condition?.text}
               </Text>
             </View>
-            {/* Other Stats */}
+            {/* Other Status */}
             <View
               style={{
                 flexDirection: "row",
