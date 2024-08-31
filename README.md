@@ -79,11 +79,5 @@ const apiKey = ""; //Include your API key here
 - The background and icons will adjust based on the current weather conditions.
 
 ## Screenshots
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> b605ed5102708be0f6fc41745f6d8f2ffca65c9f
-=======
->>>>>>> b605ed5102708be0f6fc41745f6d8f2ffca65c9f
 You can access the screenshots by locating the Screenshots folder under Assests
