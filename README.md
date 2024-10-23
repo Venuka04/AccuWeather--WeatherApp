@@ -1,6 +1,6 @@
-# WeatherApp - React Native
+# AccuWeather - WeatherApp
 
-WeatherApp is a React Native application that provides real-time weather updates and detailed forecasts for cities around the world. The app is designed with a clean and intuitive user interface, offering users a seamless experience when checking weather conditions.
+AccuWeather is a React Native application that provides real-time weather updates and detailed forecasts for cities around the world. The app is designed with a clean and intuitive user interface, offering users a seamless experience when checking weather conditions.
 
 ## Features
 
@@ -62,9 +62,9 @@ Ensure you have the following installed:
 
 - Replace the placeholder API key with your actual WeatherAPI key:
 
-```javascript
-const apiKey = ""; //Include your API key here
-```
+   ```javascript
+   const apiKey = ""; //Include your API key here
+   ```
 
 5. **Run the application:**
    start the Metro server separately by running:
